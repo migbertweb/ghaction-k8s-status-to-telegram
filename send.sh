@@ -12,7 +12,7 @@ JOB_STATUS="$7"
 DEPLOY_DURATION="$8"
 
 # Entorno de GitHub
-REPO="[${GITHUB_REPOSITORY}](https://github.com/${GITHUB_REPOSITORY})"
+REPO="${GITHUB_REPOSITORY}"
 BRANCH="${GITHUB_REF_NAME}"
 COMMIT="${GITHUB_SHA}"
 COMMIT_URL="https://github.com/$REPO/commit/$COMMIT"
@@ -35,7 +35,7 @@ fi
 TEXT="$EMOJI $TITLE
 
 $TAG_LINE
-🚀 Proyecto: \`$REPO\`
+🚀 Proyecto: [\`$REPO\`](https://github.com/$REPO)
 🌿 Rama: \`$BRANCH\`
 🔁 Commit: [\`$SHORT_SHA\`]($COMMIT_URL)
 🕒 Duración: *${DEPLOY_DURATION}s*"
