@@ -43,8 +43,7 @@ $TAG_LINE
 🔁 Commit: [\`$SHORT_SHA\`]($COMMIT_URL)
 🕒 Duración: *${DEPLOY_DURATION}s*
 
-ARCHIVOS_MODIFICADOS="🧾 Archivos modificados:
-
+🧾 Archivos modificados:
 \`\`\`
 $FORMATTED_FILES
 \`\`\`
