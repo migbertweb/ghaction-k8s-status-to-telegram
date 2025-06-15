@@ -12,12 +12,14 @@ JOB_STATUS="$7"
 DEPLOY_DURATION="$8"
 
 # Entorno de GitHub
-REPO="${GITHUB_REPOSITORY}"
+REPO="[${GITHUB_REPOSITORY}](https://github.com/${GITHUB_REPOSITORY})"
 BRANCH="${GITHUB_REF_NAME}"
 COMMIT="${GITHUB_SHA}"
 COMMIT_URL="https://github.com/$REPO/commit/$COMMIT"
 JOB_STATUS="${JOB_STATUS:-success}"
 DEPLOY_DURATION="${DEPLOY_DURATION:-0}"
+
+SHORT_SHA=$(echo "$COMMIT" | cut -c1-7)
 
 # Mensaje
 if [ "$JOB_STATUS" = "success" ]; then
@@ -35,7 +37,7 @@ TEXT="$EMOJI $TITLE
 $TAG_LINE
 🚀 Proyecto: \`$REPO\`
 🌿 Rama: \`$BRANCH\`
-🔁 Commit: [\`$COMMIT\`]($COMMIT_URL)
+🔁 Commit: [\`$SHORT_SHA\`]($COMMIT_URL)
 🕒 Duración: *${DEPLOY_DURATION}s*"
 
 # Espera opcional
