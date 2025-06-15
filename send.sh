@@ -60,9 +60,14 @@ $FORMATTED_FILES
 echo "Esperando $DELAY segundos..."
 sleep "$DELAY"
 
-# Generar archivo
+# Generar archivo de estado
+if [ "$JOB_STATUS" = "success" ]; then
 export KUBECONFIG="$KUBECONFIG_PATH"
 kubectl get all -n "$NAMESPACE" > "$FILE"
+else
+  echo "El despliegue falló, no se generará el archivo de estado."
+  echo "Error en el despliegue" > "$FILE"
+fi
 
 # Enviar mensaje único con caption
 curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendDocument" \
