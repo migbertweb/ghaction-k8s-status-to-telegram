@@ -3,7 +3,7 @@ description: "Envía un mensaje a Telegram con el estado del clúster Kubernetes
 icon: "message-square"
 branding:
   color: "blue"
-  icon: "telegram"
+  icon: "message-square"
   secondary_color: "lightblue"
 
 inputs:
