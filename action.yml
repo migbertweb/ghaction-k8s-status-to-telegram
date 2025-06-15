@@ -1,7 +1,10 @@
 name: "Enviar estado del clúster a Telegram"
 description: "Envía un mensaje a Telegram con el estado del clúster Kubernetes y resumen del deploy"
 icon: "message-square"
-color: "green"
+branding:
+  color: "blue"
+  icon: "telegram"
+  secondary_color: "lightblue"
 
 inputs:
   telegram_token:
