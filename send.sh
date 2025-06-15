@@ -24,15 +24,22 @@ SHORT_SHA=$(echo "$COMMIT" | cut -c1-7)
 CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r "$COMMIT")
 FORMATTED_FILES=$(echo "$CHANGED_FILES" | sed '/^$/d' | sed 's/^/• /')
 
+# Verificar si hay nueva version de imagen
+if [ -n "$TAG" ]; then
+    TAG_LINE="📦 Nueva Versión de Imagen: *$TAG*"
+    FILE="k8s_status_${TAG}.txt"
+else
+    TAG_LINE="📦 Utilizando misma Version de Imagen"
+    FILE="k8s_status.txt"
+fi
+
 # Mensaje
 if [ "$JOB_STATUS" = "success" ]; then
   EMOJI="✅"
   TITLE="*Deploy exitoso*"
-  TAG_LINE="📦 Versión: *$TAG*"
 else
   EMOJI="❌"
   TITLE="*Error en Deploy*"
-  TAG_LINE=""
 fi
 
 TEXT="$EMOJI $TITLE
@@ -41,7 +48,7 @@ $TAG_LINE
 🚀 *Proyecto:* [\`$REPO\`](https://github.com/$REPO)
 🌿 *Rama:* \`$BRANCH\`
 🔁 *Commit:* [\`$SHORT_SHA\`]($COMMIT_URL)
-🕒 *Duración:* *${DEPLOY_DURATION}s*
+🕒 *Duración:* *${DEPLOY_DURATION}*
 
 🧾 *Archivos modificados:*
 \`\`
@@ -55,13 +62,15 @@ sleep "$DELAY"
 
 # Generar archivo
 export KUBECONFIG="$KUBECONFIG_PATH"
-kubectl get all -n "$NAMESPACE" > k8s_status_${TAG}.txt
+kubectl get all -n "$NAMESPACE" > "$FILE"
 
 # Enviar mensaje único con caption
 curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendDocument" \
   -F chat_id="${CHAT_ID}" \
-  -F document=@"k8s_status_${TAG}.txt" \
+  -F document=@"$FILE" \
   -F caption="$TEXT" \
   -F parse_mode="Markdown"
 
-rm -f k8s_status_${TAG}.txt
+rm -f $FILE
+echo "Mensaje enviado a Telegram con éxito."
+# Fin del script
