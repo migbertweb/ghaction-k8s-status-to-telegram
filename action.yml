@@ -1,31 +1,44 @@
-name: "K8s Status to Telegram"
-description: "Espera unos segundos tras un deploy, obtiene el estado con kubectl y envía como archivo a Telegram"
+name: "Enviar estado del clúster a Telegram"
+description: "Envía un mensaje a Telegram con el estado del clúster Kubernetes y resumen del deploy"
+
 inputs:
   telegram_token:
-    description: "Bot token de Telegram"
     required: true
+    description: "Token del bot de Telegram"
   telegram_chat_id:
+    required: true
     description: "Chat ID de Telegram"
-    required: true
   kubeconfig:
-    description: "Ruta al archivo kubeconfig"
     required: true
+    description: "Ruta al archivo kubeconfig"
   namespace:
-    description: "Namespace de Kubernetes"
-    required: false
-    default: "default"
+    required: true
+    description: "Namespace donde consultar estado"
   delay:
-    description: "Segundos a esperar antes de hacer kubectl"
     required: false
     default: "15"
+    description: "Segundos a esperar antes de consultar el clúster"
   tag:
-    description: "Tag o versión del despliegue"
+    required: true
+    description: "Versión del deploy"
+  job_status:
     required: false
-    default: "latest"
+    default: "success"
+    description: "Estado del job (success/failure)"
+  deploy_duration:
+    required: false
+    default: "0"
+    description: "Duración del deploy en segundos"
+
 runs:
-  using: "composite"
-  steps:
-    - run: chmod +x ${{ github.action_path }}/send.sh
-      shell: bash
-    - run: ${{ github.action_path }}/send.sh "${{ inputs.telegram_token }}" "${{ inputs.telegram_chat_id }}" "${{ inputs.kubeconfig }}" "${{ inputs.namespace }}" "${{ inputs.delay }}" "${{ inputs.tag }}"
-      shell: bash
+  using: "docker"
+  image: "Dockerfile"
+  args:
+    - ${{ inputs.telegram_token }}
+    - ${{ inputs.telegram_chat_id }}
+    - ${{ inputs.kubeconfig }}
+    - ${{ inputs.namespace }}
+    - ${{ inputs.delay }}
+    - ${{ inputs.tag }}
+    - ${{ inputs.job_status }}
+    - ${{ inputs.deploy_duration }}
