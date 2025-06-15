@@ -20,6 +20,9 @@ JOB_STATUS="${JOB_STATUS:-success}"
 DEPLOY_DURATION="${DEPLOY_DURATION:-0}"
 
 SHORT_SHA=$(echo "$COMMIT" | cut -c1-7)
+# Archivos modificados
+CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r "$COMMIT")
+FORMATTED_FILES=$(echo "$CHANGED_FILES" | sed '/^$/d' | sed 's/^/• /')
 
 # Mensaje
 if [ "$JOB_STATUS" = "success" ]; then
@@ -38,7 +41,14 @@ $TAG_LINE
 🚀 Proyecto: [\`$REPO\`](https://github.com/$REPO)
 🌿 Rama: \`$BRANCH\`
 🔁 Commit: [\`$SHORT_SHA\`]($COMMIT_URL)
-🕒 Duración: *${DEPLOY_DURATION}s*"
+🕒 Duración: *${DEPLOY_DURATION}s*
+
+ARCHIVOS_MODIFICADOS="🧾 Archivos modificados:
+
+\`\`\`
+$FORMATTED_FILES
+\`\`\`
+"
 
 # Espera opcional
 echo "Esperando $DELAY segundos..."
