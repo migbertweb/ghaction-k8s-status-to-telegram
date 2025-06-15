@@ -1,0 +1,31 @@
+name: "K8s Status to Telegram"
+description: "Espera unos segundos tras un deploy, obtiene el estado con kubectl y envía como archivo a Telegram"
+inputs:
+  telegram_token:
+    description: "Bot token de Telegram"
+    required: true
+  telegram_chat_id:
+    description: "Chat ID de Telegram"
+    required: true
+  kubeconfig:
+    description: "Ruta al archivo kubeconfig"
+    required: true
+  namespace:
+    description: "Namespace de Kubernetes"
+    required: false
+    default: "default"
+  delay:
+    description: "Segundos a esperar antes de hacer kubectl"
+    required: false
+    default: "15"
+  tag:
+    description: "Tag o versión del despliegue"
+    required: false
+    default: "latest"
+runs:
+  using: "composite"
+  steps:
+    - run: chmod +x ${{ github.action_path }}/send.sh
+      shell: bash
+    - run: ${{ github.action_path }}/send.sh "${{ inputs.telegram_token }}" "${{ inputs.telegram_chat_id }}" "${{ inputs.kubeconfig }}" "${{ inputs.namespace }}" "${{ inputs.delay }}" "${{ inputs.tag }}"
+      shell: bash
