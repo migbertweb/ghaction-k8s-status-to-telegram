@@ -38,15 +38,15 @@ fi
 TEXT="$EMOJI $TITLE
 
 $TAG_LINE
-🚀 Proyecto: [\`$REPO\`](https://github.com/$REPO)
-🌿 Rama: \`$BRANCH\`
-🔁 Commit: [\`$SHORT_SHA\`]($COMMIT_URL)
-🕒 Duración: *${DEPLOY_DURATION}s*
+🚀 *Proyecto:* [\`$REPO\`](https://github.com/$REPO)
+🌿 *Rama:* \`$BRANCH\`
+🔁 *Commit:* [\`$SHORT_SHA\`]($COMMIT_URL)
+🕒 *Duración:* *${DEPLOY_DURATION}s*
 
-🧾 Archivos modificados:
-\`\`\`
+🧾 *Archivos modificados:*
+\`\`
 $FORMATTED_FILES
-\`\`\`
+\`\`
 "
 
 # Espera opcional

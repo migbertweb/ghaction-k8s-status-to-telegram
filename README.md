@@ -14,7 +14,5 @@ Este Action espera unos segundos tras un deploy a Kubernetes, ejecuta `kubectl g
     namespace: default
     delay: 15
     tag: ${{ steps.tag.outputs.new_tag }}
-
-    
-    - ${{ inputs.job_status }}
-    - ${{ inputs.deploy_duration }}
+    job_status: ${{ job.status }}
+    deploy_duration: ${{ steps.deploy_duration.outputs.time_in_seconds }}
